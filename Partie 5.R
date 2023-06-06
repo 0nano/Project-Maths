@@ -1,8 +1,8 @@
 # Partie 1 : Importation des données
 
-# Assurez-vous d'avoir installé les packages nécessaires
-#install.packages("dplyr") 
-#install.packages("readr")
+# On vérifie d'avoir installé les packages nécessaires
+# install.packages("dplyr") 
+# install.packages("readr")
 
 library(dplyr)
 library(readr)
@@ -13,10 +13,10 @@ data <- read_csv("seismes_2014.csv")
 # Partie 2 : Filtrer les données des cinq villes d'intérêt
 
 # Définir les villes d'intérêt
-villes <- c("California", "NewYork", "Texas", "Washington", "Illinois")
+etats <- c("California", "NewYork", "Texas", "Washington", "Illinois")
 
-# Filtrer les données pour les séismes dans les villes d'intérêt
-seismes <- data %>% filter(Ville %in% villes)
+# Filtrer les données pour les séismes dans les etats souhaités
+seismes <- filter(data, pays %in% etats)
 
 # Afficher les premières lignes des données filtrées
 head(seismes)
