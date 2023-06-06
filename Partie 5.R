@@ -10,9 +10,9 @@ library(readr)
 # Importation du fichier CSV contenant les données des séismes
 data <- read_csv("seismes_2014.csv")
 
-# Partie 2 : Filtrer les données des cinq villes d'intérêt
+# Partie 2 : Filtrer les données des cinq etats d'intérêt
 
-# Définir les villes d'intérêt
+# Définir les etats d'intérêt
 etats <- c("California", "NewYork", "Texas", "Washington", "Illinois")
 
 # Filtrer les données pour les séismes dans les etats souhaités
@@ -23,7 +23,7 @@ head(seismes)
 
 # Partie 3 : Analyse exploratoire des données
 
-# Visualiser la répartition des séismes dans les différentes villes
+# Visualiser la répartition des séismes dans les différentes etats
 library(ggplot2)
 
 ggplot(seismes, aes(x = mag, fill = pays)) +
@@ -31,7 +31,7 @@ ggplot(seismes, aes(x = mag, fill = pays)) +
   labs(x = "Magnitude", y = "Nombre de séismes", fill = "Ville") +
   theme_minimal()
 
-# Partie 4 : Division des données en groupes pour chaque ville
+# Partie 4 : Division des données en groupes pour chaque etat
 
 groupes <- split(seismes$mag, seismes$pays)
 
@@ -48,10 +48,10 @@ print(stat_test)
 alpha <- 0.05  # Niveau de significativité
 
 if (stat_test$p.value < alpha) {
-  cat("Les distributions des magnitudes de séisme sont significativement différentes entre les villes.\n")
-  cat("On rejette l'hypothèse nulle (H0) : toutes les villes ont la même vulnérabilité aux séismes.\n")
+  cat("Les distributions des magnitudes de séisme sont significativement différentes entre les etats.\n")
+  cat("On rejette l'hypothèse nulle (H0) : tous les etats ont la même vulnérabilité aux séismes.\n")
 } else {
-  cat("Les distributions des magnitudes de séisme ne sont pas significativement différentes entre les villes.\n")
-  cat("On ne peut pas rejeter l'hypothèse nulle (H0) : toutes les villes ont la même vulnérabilité aux séismes.\n")
+  cat("Les distributions des magnitudes de séisme ne sont pas significativement différentes entre les etats.\n")
+  cat("On ne peut pas rejeter l'hypothèse nulle (H0) : tous les etats ont la même vulnérabilité aux séismes.\n")
 }
 
