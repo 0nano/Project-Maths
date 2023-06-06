@@ -58,26 +58,23 @@ if (stat_test$p.value < alpha) {
 
 # Partie 7 : Tests post-hoc pour identifier les différences significatives entre les villes
 
-if (stat_test$p.value < alpha) {
-  library(rcompanion)
-  
-  posthoc_kruskal_nemenyi(seismes$Magnitude, seismes$Ville)
-}
-
-
-
 # Partie 8 : Analyse des résultats post-hoc
 
 if (stat_test$p.value < alpha) {
-  # Effectuer des tests post-hoc pour identifier les paires de villes significativement différentes
-  library(rcompanion)
+  # Effectuer un test Kruskal-Wallis
+  kruskal_result <- kruskal.test(Magnitude ~ Ville, data = seismes)
   
-  posthoc_results <- posthoc_kruskal_nemenyi(seismes$Magnitude, seismes$Ville)
+  # Effectuer des tests post-hoc pour identifier les paires de villes significativement différentes
+  library(pgirmess)
+  
+  posthoc_results <- pairwise.wilcox.test(seismes$Magnitude, seismes$Ville, p.adjust.method = "bonferroni")
   
   # Afficher les paires de villes significativement différentes
-  significant_pairs <- posthoc_results$`Group Differences` %>%
-    filter(p.value < alpha) %>%
-    select(`Group.1`, `Group.2`, p.value)
+  significant_pairs <- posthoc_results$p.value %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "Pair") %>%
+    filter(Pair != "NA") %>%
+    mutate(p.adjust = p.adjust(p.value, method = "bonferroni"))
   
   cat("Les paires de villes significativement différentes dans les distributions des magnitudes de séisme sont :\n")
   print(significant_pairs)
