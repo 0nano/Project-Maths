@@ -51,7 +51,7 @@ print(stat_test)
 
 # Partie 6 : Interprétation des résultats du test statistique
 
-alpha <- 0.05  # Niveau de significativité
+alpha <- 0.2  # Niveau de significativité (0.2 = 20% / 0.05 = 95% / 0.01 = 99%)
 
 if (stat_test$p.value < alpha) {
   cat("Les distributions des magnitudes de séisme sont significativement différentes entre les etats.\n")
