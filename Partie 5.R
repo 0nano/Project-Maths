@@ -42,3 +42,73 @@ stat_test <- kruskal.test(seismes$mag, seismes$pays)
 
 # Afficher les résultats du test statistique
 print(stat_test)
+
+
+# Partie 6 : Interprétation des résultats du test statistique
+
+alpha <- 0.05  # Niveau de significativité
+
+if (stat_test$p.value < alpha) {
+  cat("Les distributions des magnitudes de séisme sont significativement différentes entre les villes.\n")
+  cat("On rejette l'hypothèse nulle (H0) : toutes les villes ont la même vulnérabilité aux séismes.\n")
+} else {
+  cat("Les distributions des magnitudes de séisme ne sont pas significativement différentes entre les villes.\n")
+  cat("On ne peut pas rejeter l'hypothèse nulle (H0) : toutes les villes ont la même vulnérabilité aux séismes.\n")
+}
+
+# Partie 7 : Tests post-hoc pour identifier les différences significatives entre les villes
+
+if (stat_test$p.value < alpha) {
+  library(rcompanion)
+  
+  posthoc_kruskal_nemenyi(seismes$Magnitude, seismes$Ville)
+}
+
+
+
+# Partie 8 : Analyse des résultats post-hoc
+
+if (stat_test$p.value < alpha) {
+  # Effectuer des tests post-hoc pour identifier les paires de villes significativement différentes
+  library(rcompanion)
+  
+  posthoc_results <- posthoc_kruskal_nemenyi(seismes$Magnitude, seismes$Ville)
+  
+  # Afficher les paires de villes significativement différentes
+  significant_pairs <- posthoc_results$`Group Differences` %>%
+    filter(p.value < alpha) %>%
+    select(`Group.1`, `Group.2`, p.value)
+  
+  cat("Les paires de villes significativement différentes dans les distributions des magnitudes de séisme sont :\n")
+  print(significant_pairs)
+}
+
+# Partie 9 : Analyse des résultats et conclusion
+
+if (stat_test$p.value < alpha) {
+  if (nrow(significant_pairs) > 0) {
+    cat("Selon les résultats des tests post-hoc, certaines villes présentent des différences significatives dans les distributions des magnitudes de séisme.\n")
+  } else {
+    cat("Aucune paire de villes ne présente de différence significative dans les distributions des magnitudes de séisme.\n")
+  }
+} else {
+  cat("Les distributions des magnitudes de séisme ne diffèrent pas significativement entre les villes.\n")
+}
+
+
+# Partie 10 : Analyse des résultats et conclusion finale
+
+if (stat_test$p.value < alpha) {
+  if (nrow(significant_pairs) > 0) {
+    cat("Selon les résultats des tests post-hoc, certaines villes présentent des différences significatives dans les distributions des magnitudes de séisme.\n")
+    cat("Il est nécessaire de procéder à des analyses supplémentaires pour déterminer la ville la moins vulnérable.\n")
+  } else {
+    cat("Aucune paire de villes ne présente de différence significative dans les distributions des magnitudes de séisme.\n")
+    cat("Toutes les villes ont des vulnérabilités similaires aux séismes.\n")
+    cat("L'hypothèse nulle (H0) est validée : toutes les villes ont la même vulnérabilité aux séismes.\n")
+  }
+} else {
+  cat("Les distributions des magnitudes de séisme diffèrent significativement entre les villes.\n")
+  cat("Il est nécessaire de procéder à des analyses supplémentaires pour déterminer la ville la moins vulnérable.\n")
+}
+
