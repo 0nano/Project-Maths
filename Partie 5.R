@@ -1,8 +1,8 @@
 # Partie 1 : Importation des données
 
 # On vérifie d'avoir installé les packages nécessaires
-# install.packages("dplyr") 
-# install.packages("readr")
+ install.packages("dplyr") 
+ install.packages("readr")
 
 library(dplyr)
 library(readr)
@@ -22,3 +22,24 @@ seismes <- filter(data, pays %in% etats)
 head(seismes)
 
 
+# Partie 3 : Analyse exploratoire des données
+
+# Visualiser la répartition des séismes dans les différentes villes
+library(ggplot2)
+
+ggplot(seismes, aes(x = Ville)) +
+  geom_bar(fill = "skyblue", color = "black") +
+  labs(title = "Répartition des séismes par ville") +
+  xlab("Ville") +
+  ylab("Nombre de séismes")
+
+# Partie 4 : Division des données en groupes pour chaque ville
+
+groupes <- split(seismes$Magnitude, seismes$Ville)
+
+# Partie 5 : Test de Kruskal-Wallis pour comparer les distributions des magnitudes de séisme
+
+stat_test <- kruskal.test(seismes$Magnitude, seismes$Ville)
+
+# Afficher les résultats du test statistique
+print(stat_test)
