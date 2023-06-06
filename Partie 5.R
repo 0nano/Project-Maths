@@ -26,11 +26,10 @@ head(seismes)
 # Visualiser la répartition des séismes dans les différentes villes
 library(ggplot2)
 
-ggplot(seismes, aes(x = etats)) +
-  geom_bar(fill = "skyblue", color = "black") +
-  labs(title = "Répartition des séismes par etats") +
-  xlab("etats") +
-  ylab("Nombre de séismes")
+ggplot(seismes, aes(x = mag, fill = pays)) +
+  geom_histogram(binwidth = 0.5, alpha = 0.5) +
+  labs(x = "Magnitude", y = "Nombre de séismes", fill = "Ville") +
+  theme_minimal()
 
 # Partie 4 : Division des données en groupes pour chaque ville
 
