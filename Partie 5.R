@@ -81,34 +81,27 @@ if (stat_test$p.value < alpha) {
   
   cat("Les paires de villes significativement différentes dans les distributions des magnitudes de séisme sont :\n")
   print(significant_pairs)
-}
-
-# Partie 9 : Analyse des résultats et conclusion
-
-if (stat_test$p.value < alpha) {
+  
+  # Partie 9 : Analyse des résultats et conclusion
+  
   if (nrow(significant_pairs) > 0) {
     cat("Selon les résultats des tests post-hoc, certaines villes présentent des différences significatives dans les distributions des magnitudes de séisme.\n")
-  } else {
-    cat("Aucune paire de villes ne présente de différence significative dans les distributions des magnitudes de séisme.\n")
-  }
-} else {
-  cat("Les distributions des magnitudes de séisme ne diffèrent pas significativement entre les villes.\n")
-}
-
-
-# Partie 10 : Analyse des résultats et conclusion finale
-
-if (stat_test$p.value < alpha) {
-  if (nrow(significant_pairs) > 0) {
-    cat("Selon les résultats des tests post-hoc, certaines villes présentent des différences significatives dans les distributions des magnitudes de séisme.\n")
-    cat("Il est nécessaire de procéder à des analyses supplémentaires pour déterminer la ville la moins vulnérable.\n")
+    
+    # Trouver la ville avec la magnitude de séisme la plus basse
+    ville_moins_vulnerable <- seismes %>% 
+      group_by(Ville) %>% 
+      summarise(Moyenne_Magnitude = mean(Magnitude)) %>% 
+      filter(Moyenne_Magnitude == min(Moyenne_Magnitude))
+      
+    cat("La ville la moins vulnérable aux séismes, selon les tests, est :", ville_moins_vulnerable$Ville, "\n")
+    cat("L'hypothèse nulle (H0) est rejetée : toutes les villes n'ont pas la même vulnérabilité aux séismes.\n")
   } else {
     cat("Aucune paire de villes ne présente de différence significative dans les distributions des magnitudes de séisme.\n")
     cat("Toutes les villes ont des vulnérabilités similaires aux séismes.\n")
     cat("L'hypothèse nulle (H0) est validée : toutes les villes ont la même vulnérabilité aux séismes.\n")
   }
 } else {
-  cat("Les distributions des magnitudes de séisme diffèrent significativement entre les villes.\n")
-  cat("Il est nécessaire de procéder à des analyses supplémentaires pour déterminer la ville la moins vulnérable.\n")
+  cat("Les distributions des magnitudes de séisme ne diffèrent pas significativement entre les villes.\n")
+  cat("Toutes les villes ont des vulnérabilités similaires aux séismes.\n")
+  cat("L'hypothèse nulle (H0) est validée : toutes les villes ont la même vulnérabilité aux séismes.\n")
 }
-
