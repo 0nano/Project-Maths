@@ -28,7 +28,13 @@ library(ggplot2)
 
 ggplot(seismes, aes(x = mag, fill = pays)) +
   geom_histogram(binwidth = 0.5, alpha = 0.5) +
-  labs(x = "Magnitude", y = "Nombre de séismes", fill = "Ville") +
+  labs(x = "Magnitude", y = "Nombre de séismes", fill = "États") +
+  theme_minimal()
+
+# Visualiser la répartition des séismes dans les différentes etats sans la californie
+ggplot(filter(seismes, pays != "California"), aes(x = mag, fill = pays)) +
+  geom_histogram(binwidth = 0.5, alpha = 0.5) +
+  labs(x = "Magnitude", y = "Nombre de séismes", fill = "États") +
   theme_minimal()
 
 # Partie 4 : Division des données en groupes pour chaque etat
