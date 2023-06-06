@@ -61,17 +61,6 @@ if (stat_test$p.value < alpha) {
   cat("On ne peut pas rejeter l'hypothèse nulle (H0) : tous les etats ont la même vulnérabilité aux séismes.\n")
 }
 
-# On cherche à savoir quels etats ont des distributions de magnitudes de séisme significativement différentes
-# On effectue le test de Wilcoxon pour comparer les distributions des magnitudes de séisme entre chaque paire d'etats
-for (i in 1:(length(groupes))) {
-  for (j in (i + 1):length(groupes)) {
-    stat_test <- wilcox.test(groupes[[i]], groupes[[j]])
-    if (stat_test$p.value < alpha) {
-      cat("Les distributions des magnitudes de séisme sont significativement différentes entre", names(groupes)[i], "et", names(groupes)[j], "\n")
-    }
-  }
-}
-
 # On cherche à savoir quel etat a eu le plus de seismes
 # On calcule le nombre de seismes par etat
 nb_seismes <- sapply(groupes, length)
